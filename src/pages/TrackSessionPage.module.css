@@ -1,0 +1,94 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  height: calc(100vh - 120px);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.mapPlaceholder {
+  flex: 1;
+  background-color: var(--neutral-200);
+  border-radius: var(--radius-lg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--neutral-500);
+  border: 2px dashed var(--neutral-300);
+  position: relative;
+}
+
+.mapIcon {
+  color: var(--primary-400);
+  margin-bottom: 1rem;
+}
+
+.offlineWarning {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  background-color: var(--neutral-800);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+}
+
+.activeTask {
+  padding: 1.5rem;
+}
+
+.activeTask h3 {
+  margin-top: 0;
+  margin-bottom: 0.25rem;
+}
+
+.activeTask p {
+  color: var(--neutral-500);
+  margin-bottom: 1rem;
+}
+
+.actions {
+  display: flex;
+  gap: 1rem;
+}
+
+/* =============================
+   MOBILE RESPONSIVE
+   ============================= */
+@media (max-width: 768px) {
+  .container {
+    height: auto;
+    min-height: calc(100vh - 120px);
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .mapPlaceholder {
+    min-height: 250px;
+  }
+
+  .actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .actions button {
+    width: 100%;
+  }
+
+  .activeTask {
+    padding: 1rem;
+  }
+}
+
