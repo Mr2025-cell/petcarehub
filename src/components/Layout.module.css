@@ -1,0 +1,242 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.header {
+  height: 64px;
+  background-color: var(--neutral-50);
+  border-bottom: 1px solid var(--neutral-200);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: var(--shadow-sm);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--primary-600);
+  cursor: pointer;
+  z-index: 102;
+}
+
+.logoIcon {
+  color: var(--accent-500);
+}
+
+/* Hamburger — hidden on desktop */
+.hamburger {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--neutral-700);
+  cursor: pointer;
+  padding: 0.5rem;
+  z-index: 102;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.navLink {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--neutral-600);
+  transition: color var(--transition-fast);
+  white-space: nowrap;
+}
+
+.navLink:hover {
+  color: var(--primary-600);
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-left: 2rem;
+  padding-left: 2rem;
+  border-left: 1px solid var(--neutral-200);
+}
+
+.iconBtn {
+  background: none;
+  border: none;
+  color: var(--neutral-600);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  border-radius: var(--radius-full);
+  transition: all var(--transition-fast);
+}
+
+.iconBtn:hover {
+  background-color: var(--neutral-100);
+  color: var(--neutral-900);
+}
+
+/* Greeting text for logged-in users */
+.greeting {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--neutral-600);
+  white-space: nowrap;
+}
+
+/* Guest (unauthenticated) action buttons */
+.guestActions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.loginBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 1.25rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--primary-700);
+  background: transparent;
+  border: 1px solid var(--primary-300);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.loginBtn:hover {
+  background-color: var(--primary-50);
+  border-color: var(--primary-500);
+}
+
+.signupBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 1.25rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: white;
+  background-color: var(--primary-600);
+  border: 1px solid var(--primary-600);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.signupBtn:hover {
+  background-color: var(--primary-700);
+  border-color: var(--primary-700);
+}
+
+/* Overlay behind mobile menu */
+.overlay {
+  display: none;
+}
+
+.main {
+  flex: 1;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* =============================
+   MOBILE RESPONSIVE (≤768px)
+   ============================= */
+@media (max-width: 768px) {
+  .header {
+    padding: 0 1rem;
+  }
+
+  .hamburger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .nav {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 280px;
+    height: 100vh;
+    background-color: white;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 5rem 1.5rem 2rem;
+    gap: 0.25rem;
+    box-shadow: var(--shadow-xl);
+    transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 101;
+    overflow-y: auto;
+  }
+
+  .navOpen {
+    right: 0;
+  }
+
+  .overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 100;
+  }
+
+  .navLink {
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius-md);
+    font-size: 1rem;
+  }
+
+  .navLink:hover {
+    background-color: var(--primary-50);
+  }
+
+  .actions {
+    margin-left: 0;
+    padding-left: 0;
+    border-left: none;
+    border-top: 1px solid var(--neutral-200);
+    padding-top: 1rem;
+    margin-top: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .guestActions {
+    flex-direction: column;
+    width: 100%;
+    gap: 0.5rem;
+  }
+
+  .loginBtn,
+  .signupBtn {
+    width: 100%;
+    justify-content: center;
+    padding: 0.75rem;
+  }
+
+  .main {
+    padding: 1rem;
+  }
+}
