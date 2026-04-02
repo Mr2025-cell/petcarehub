@@ -5,7 +5,7 @@ import { Card } from '../components/Card';
 import { Button } from '../components/Button';
 import { useAuth } from '../contexts/AuthContext';
 import { authService } from '../services/authService';
-import { validateEmail, validatePassword } from '../utils/validation';
+import { validateEmail } from '../utils/validation';
 import styles from './LoginPage.module.css';
 
 export function LoginPage() {
@@ -25,9 +25,9 @@ export function LoginPage() {
     setErrors({});
     setApiError('');
 
-    // 1. Run Input Validation synchronously
+    // 1. Run Input Validation — only check fields are filled (no complexity rules on login)
     const emailErr = validateEmail(email);
-    const passErr = validatePassword(password);
+    const passErr = !password ? 'Password is required' : null;
 
     if (emailErr || passErr) {
       setErrors({ email: emailErr, password: passErr });

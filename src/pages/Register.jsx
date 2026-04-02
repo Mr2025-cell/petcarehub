@@ -18,7 +18,9 @@ export function Register() {
     lastName: '',
     email: '',
     password: '',
-    address: '', 
+    addressLine: '',
+    city: '',
+    postcode: '',
     hourlyRate: '', 
     bio: '' 
   });
@@ -67,8 +69,12 @@ export function Register() {
 
     setIsSubmitting(true);
     try {
-      // Async pseudo-backend call encapsulating UC1 Role assignment
-      const newUser = await authService.register(formData, role);
+      // Build combined address string for storage
+      const submissionData = {
+        ...formData,
+        address: [formData.addressLine, formData.city, formData.postcode].filter(Boolean).join(', ')
+      };
+      const newUser = await authService.register(submissionData, role);
       // Immediately log the user into the global context
       loginUser(newUser);
       navigate('/');
@@ -142,10 +148,22 @@ export function Register() {
             </div>
 
             {role === 'PetOwner' && (
-              <div className={styles.inputGroup}>
-                <label htmlFor="address">Home Address</label>
-                <input type="text" id="address" name="address" placeholder="123 Dogwood Lane" value={formData.address} onChange={handleChange} />
-              </div>
+              <>
+                <div className={styles.inputGroup}>
+                  <label htmlFor="addressLine">Address Line</label>
+                  <input type="text" id="addressLine" name="addressLine" placeholder="123 Dogwood Lane" value={formData.addressLine} onChange={handleChange} />
+                </div>
+                <div className={styles.nameRow}>
+                  <div className={styles.inputGroup}>
+                    <label htmlFor="city">City</label>
+                    <input type="text" id="city" name="city" placeholder="London" value={formData.city} onChange={handleChange} />
+                  </div>
+                  <div className={styles.inputGroup}>
+                    <label htmlFor="postcode">Postcode</label>
+                    <input type="text" id="postcode" name="postcode" placeholder="SW1A 1AA" value={formData.postcode} onChange={handleChange} />
+                  </div>
+                </div>
+              </>
             )}
 
             {role === 'PetCaregiver' && (
