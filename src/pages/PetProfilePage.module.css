@@ -1,0 +1,145 @@
+.page {
+  min-height: 100vh;
+  background: #f5f7fb;
+  padding: 40px 20px;
+}
+
+.card {
+  max-width: 950px;
+  margin: 0 auto;
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 32px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+}
+
+.backButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: 1px solid #d7dee7;
+  border-radius: 10px;
+  padding: 10px 14px;
+  cursor: pointer;
+  margin-bottom: 24px;
+  font-size: 14px;
+  color: #0f172a;
+}
+
+.header {
+  display: flex;
+  gap: 28px;
+  align-items: center;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+}
+
+.imageWrapper {
+  flex-shrink: 0;
+}
+
+.petImage {
+  width: 180px;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 18px;
+}
+
+.placeholder {
+  width: 180px;
+  height: 180px;
+  border-radius: 18px;
+  background: #eef4f7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #4f6b7a;
+}
+
+.headerText h1 {
+  margin: 0 0 8px;
+  font-size: 40px;
+  color: #0f172a;
+}
+
+.subtitle {
+  margin: 0 0 12px;
+  color: #5b667a;
+  font-size: 17px;
+}
+
+.weightBadge {
+  display: inline-block;
+  background: #eef2f7;
+  color: #334155;
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.infoGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.infoBox,
+.infoBoxFull {
+  background: #f8fafc;
+  border: 1px solid #e5edf3;
+  border-radius: 16px;
+  padding: 20px;
+}
+
+.infoBoxFull {
+  grid-column: 1 / -1;
+}
+
+.infoBox h3,
+.infoBoxFull h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 0;
+  margin-bottom: 14px;
+  font-size: 18px;
+  color: #0f172a;
+}
+
+.infoBox p,
+.infoBoxFull p {
+  margin: 8px 0;
+  color: #334155;
+  line-height: 1.6;
+}
+
+.alertList {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.alertItem {
+  margin-bottom: 8px;
+  color: #334155;
+  line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+  .card {
+    padding: 20px;
+  }
+
+  .headerText h1 {
+    font-size: 32px;
+  }
+
+  .infoGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .infoBoxFull {
+    grid-column: auto;
+  }
+}

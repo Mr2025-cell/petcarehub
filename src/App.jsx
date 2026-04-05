@@ -10,6 +10,7 @@ import { TrackSessionPage } from './pages/TrackSessionPage';
 import { SearchCaregiversPage } from './pages/SearchCaregiversPage';
 import { ProfilePage } from './pages/ProfilePage';
 import { ComingSoonPage } from './pages/ComingSoonPage';
+import PetProfilePage from './pages/PetProfilePage';
 import { Dog, CalendarCheck, CheckSquare } from 'lucide-react';
 
 // A simple wrapper to route to the proper dashboard depending on state
@@ -57,13 +58,9 @@ function App() {
         } />
 
         {/* Placeholder routes — prevents 404 crashes from nav links */}
-        <Route path="/pets/*" element={
+        <Route path="/pets/:id" element={
           <ProtectedRoute>
-            <ComingSoonPage 
-              title="My Pets" 
-              description="The pet management system is being developed. You'll be able to add, edit, and manage all your pet profiles here."
-              icon={Dog}
-            />
+            <PetProfilePage />
           </ProtectedRoute>
         } />
 
