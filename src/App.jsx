@@ -12,6 +12,7 @@ import { ProfilePage } from './pages/ProfilePage';
 import { ComingSoonPage } from './pages/ComingSoonPage';
 import PetProfilePage from './pages/PetProfilePage';
 import { Dog, CalendarCheck, CheckSquare } from 'lucide-react';
+import { CarePlanEditor } from './pages/CarePlanEditor';
 
 // A simple wrapper to route to the proper dashboard depending on state
 function DashboardRouter() {
@@ -54,6 +55,13 @@ function App() {
         <Route path="/profile" element={
           <ProtectedRoute>
             <ProfilePage />
+          </ProtectedRoute>
+        } />
+
+        {/* Care Plan routes — key forces re-mount when switching between new/edit */}
+        <Route path="/care-plans/new" element={
+          <ProtectedRoute>
+            <CarePlanEditor key="new" />
           </ProtectedRoute>
         } />
 
