@@ -11,11 +11,21 @@ export function SearchCaregiversPage() {
   const [caregivers, setCaregivers] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+  const [pendingBookingMinder, setPendingBookingMinder] = useState(null);
 
   useEffect(() => {
     // Initial fetch from "Firestore"
     fetchMinders();
   }, []);
+
+  useEffect(() => {
+    if (!pendingBookingMinder) return;
+    const onKeyDown = (e) => {
+      if (e.key === 'Escape') setPendingBookingMinder(null);
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [pendingBookingMinder]);
 
   const fetchMinders = async (query = '') => {
     setIsLoading(true);
@@ -32,6 +42,24 @@ export function SearchCaregiversPage() {
   const handleSearch = (e) => {
     e.preventDefault();
     fetchMinders(searchTerm);
+  };
+
+  const handleBookSession = (minder) => {
+    setPendingBookingMinder(minder);
+  };
+
+  const confirmBooking = (minder) => {
+    try {
+      marketplaceService.createBooking(minder, {
+        // No date picker yet — keep sessionDate null for now.
+        sessionDate: null,
+      });
+      setPendingBookingMinder(null);
+      navigate('/bookings');
+    } catch (err) {
+      console.error(err);
+      alert('Sorry — we could not create that booking.');
+    }
   };
 
   return (
@@ -94,7 +122,7 @@ export function SearchCaregiversPage() {
                 <p className={styles.bio}>{minder.bio}</p>
 
                 <div className={styles.cardActions}>
-                  <Button fullWidth onClick={() => alert('Booking request workflow initiated (RQ15)')}>Book Session</Button>
+                  <Button fullWidth onClick={() => handleBookSession(minder)}>Book Session</Button>
                   <Button fullWidth variant="outline">View Full Profile</Button>
                 </div>
               </Card>
@@ -102,6 +130,41 @@ export function SearchCaregiversPage() {
           )}
         </div>
       )}
+
+      {pendingBookingMinder ? (
+        <div
+          className={styles.modalOverlay}
+          onClick={() => setPendingBookingMinder(null)}
+          role="presentation"
+        >
+          <div
+            className={styles.modal}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="confirm-booking-title"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className={styles.modalHeader}>
+              <h3 id="confirm-booking-title" className={styles.modalTitle}>Confirm Booking</h3>
+            </div>
+
+            <div className={styles.modalBody}>
+              <p className={styles.modalText}>
+                Confirm booking with{' '}
+                <span className={styles.modalCaregiverName}>
+                  {`${pendingBookingMinder?.firstName ?? ''} ${pendingBookingMinder?.lastName ?? ''}`.trim() || 'this caregiver'}
+                </span>
+                ?
+              </p>
+            </div>
+
+            <div className={styles.modalActions}>
+              <Button variant="outline" onClick={() => setPendingBookingMinder(null)}>Cancel</Button>
+              <Button onClick={() => confirmBooking(pendingBookingMinder)}>Confirm</Button>
+            </div>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }

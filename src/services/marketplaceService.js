@@ -1,6 +1,7 @@
 // import { collection, getDocs, query, where } from 'firebase/firestore';
 // import { db } from '../firebase';
 import { mockPetMinders } from '../data/mockData';
+import { BookingManager } from '../pages/BookingManager';
 
 const DELAY = 600; 
 
@@ -51,5 +52,17 @@ export const marketplaceService = {
         }
       }, DELAY);
     });
-  }
+  },
+
+  createBooking(caregiver, options = {}) {
+    return BookingManager.createBooking(caregiver, options);
+  },
+
+  getBookings() {
+    return BookingManager.getBookings();
+  },
+
+  cancelBooking(bookingId) {
+    return BookingManager.cancelBooking(bookingId);
+  },
 };

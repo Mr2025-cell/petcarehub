@@ -13,6 +13,7 @@ import { ComingSoonPage } from './pages/ComingSoonPage';
 import PetProfilePage from './pages/PetProfilePage';
 import { Dog, CalendarCheck, CheckSquare } from 'lucide-react';
 import { CarePlanEditor } from './pages/CarePlanEditor';
+import { BookingsPage } from './pages/BookingsPage';
 
 // A simple wrapper to route to the proper dashboard depending on state
 function DashboardRouter() {
@@ -74,11 +75,7 @@ function App() {
 
         <Route path="/bookings" element={
           <ProtectedRoute>
-            <ComingSoonPage 
-              title="Bookings" 
-              description="The booking management system is being developed. You'll be able to view, create, and manage all your care bookings here."
-              icon={CalendarCheck}
-            />
+            <BookingsPage />
           </ProtectedRoute>
         } />
 
