@@ -22,6 +22,24 @@ export function OwnerDashboard() {
     setTasks(savedTasks ? JSON.parse(savedTasks) : []);
   }, []);
 
+  // Track active caregiver sessions for live tracking
+  const [activeSessions, setActiveSessions] = useState([]);
+
+  useEffect(() => {
+    const checkActiveSharing = () => {
+      try {
+        const activeShares = JSON.parse(localStorage.getItem('active_sharing_sessions') || '[]');
+        setActiveSessions(activeShares);
+      } catch (error) {
+        console.error('Error checking active sessions:', error);
+      }
+    };
+    
+    checkActiveSharing();
+    const interval = setInterval(checkActiveSharing, 5000);
+    return () => clearInterval(interval);
+  }, []);
+
   // toggle task status between pending and completed
   function handleToggleTask(taskId) {
     const updated = tasks.map(t => {
@@ -68,8 +86,50 @@ export function OwnerDashboard() {
             <MapPin size={16} /> Find Caregiver
           </Button>
           <Button onClick={() => navigate('/pets/add')}>+ Add New Pet</Button>
+          <Button 
+            variant="outline" 
+            onClick={() => {
+              // Reload active sessions from localStorage
+              const activeShares = JSON.parse(localStorage.getItem('active_sharing_sessions') || '[]');
+              setActiveSessions(activeShares);
+            }}
+          >
+            <RotateCcw size={14} /> Show Live Tracking
+          </Button>
         </div>
       </div>
+
+      {/* Live Tracking Card - Shows when caregiver has active session */}
+      {activeSessions.length > 0 && (
+        <Card className={styles.liveTrackingCard}>
+          <div className={styles.liveTrackingHeader}>
+            <MapPin size={20} className={styles.liveTrackingIcon} />
+            <h3>Live Tracking Active</h3>
+            <span className={styles.liveBadge}>LIVE</span>
+          </div>
+          <p className={styles.liveTrackingText}>
+            Your caregiver is currently active. Track their location in real-time.
+          </p>
+          {activeSessions.map(session => (
+            <div key={session.sessionId} className={styles.trackingSessionItem}>
+              <div className={styles.sessionInfo}>
+                <span className={styles.sessionLabel}>Session ID:</span>
+                <code className={styles.sessionCode}>{session.sessionId}</code>
+              </div>
+              <div className={styles.sessionTime}>
+                Started: {new Date(session.startTime).toLocaleTimeString()}
+              </div>
+              <Button 
+                size="sm" 
+                onClick={() => navigate(`/track-caregiver/${session.sessionId}`)}
+                className={styles.trackButton}
+              >
+                <MapPin size={14} /> View Live Location
+              </Button>
+            </div>
+          ))}
+        </Card>
+      )}
 
       <div className={styles.layoutGrid}>
         {/* LEFT COLUMN: Pets Layout */}

@@ -3,7 +3,7 @@ import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { Card } from '../components/Card';
 import { Button } from '../components/Button';
 import { CarePlan } from '../classes/CarePlan';
-import { Task } from '../classes/Task';
+import { Task as CareTask } from "../classes/CareTask";
 import { mockPets } from '../data/mockData';
 import { Plus, Trash2, Save, ArrowLeft, CalendarCheck, X, Pencil } from 'lucide-react';
 import styles from './CarePlanEditor.module.css';
@@ -179,7 +179,7 @@ export function CarePlanEditor() {
 
   // add a new blank task row to the list
   function handleAddEmptyTask() {
-    const task = new Task(id || 'temp', '', '', '08:00', false, 'daily');
+    const task = new CareTask(id || 'temp', '', '', '08:00', false, 'daily');
     setTasks([...tasks, task]);
     setError('');
   }

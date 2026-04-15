@@ -31,7 +31,7 @@ export function Layout() {
       <header className={styles.header}>
         <div className={styles.logo} onClick={() => navTo('/')}>
           <Dog className={styles.logoIcon} />
-          <span>PetMinder</span>
+          <span>Pet Care Hub</span>
         </div>
 
         {/* Hamburger toggle — visible only on mobile */}
@@ -76,7 +76,9 @@ export function Layout() {
               )}
 
               <div className={styles.actions}>
-                <span className={styles.greeting}>Hi, {currentUser?.firstName}</span>
+                <span className={styles.greeting}>
+                  Hi, {currentUser?.firstName} ({isOwner ? 'Pet Owner' : isMinder ? 'Pet Minder' : 'User'})
+                </span>
                 <button className={styles.iconBtn} title="Profile" onClick={() => navTo('/profile')}>
                   <User size={20} />
                 </button>
@@ -106,9 +108,9 @@ export function Layout() {
         <div className={styles.footerInner}>
           <div className={styles.footerBrand}>
             <Dog size={18} />
-            <span>PetMinder</span>
+            <span>Pet Care Hub</span>
           </div>
-          <p className={styles.footerCopy}>© {new Date().getFullYear()} PetMinder — Group 42. All rights reserved.</p>
+          <p className={styles.footerCopy}>© {new Date().getFullYear()} Pet Care Hub — Group 42. All rights reserved.</p>
           <div className={styles.footerLinks}>
             <Link to="/">Home</Link>
             <Link to="/search">Find Minders</Link>

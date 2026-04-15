@@ -1,0 +1,164 @@
+.container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e9eef3 100%);
+  padding: 24px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 28px;
+  background: linear-gradient(135deg, #1e293b, #2d3a4f);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.liveBadge {
+  background-color: #dc2626;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+.mapCard {
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.mapHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.mapHeader h3 {
+  margin: 0;
+  color: #1e293b;
+}
+
+.mapContainer {
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 20px;
+  border: 1px solid #e2e8f0;
+}
+
+.leafletMap {
+  height: 400px;
+  width: 100%;
+  background-color: #f8fafc;
+}
+
+.mapPlaceholder {
+  height: 400px;
+  background: linear-gradient(135deg, #e0e7ff, #c7d2fe);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: #475569;
+}
+
+.locationInfo {
+  background-color: #f8fafc;
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.coordRow {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.coordLabel {
+  font-weight: 600;
+  color: #475569;
+  width: 70px;
+}
+
+.coordRow code {
+  font-family: monospace;
+  font-size: 14px;
+  color: #0f172a;
+  background: white;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.updateHint {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #64748b;
+  margin-top: 12px;
+  margin-bottom: 0;
+}
+
+.sessionInfo {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid #e2e8f0;
+  font-size: 13px;
+  color: #64748b;
+}
+
+.errorCard {
+  text-align: center;
+  padding: 48px;
+  max-width: 500px;
+  margin: 80px auto;
+}
+
+.errorIcon {
+  color: #dc2626;
+  margin-bottom: 16px;
+}
+
+.backButton {
+  display: block;
+  margin: 0 auto;
+}
+
+@media (max-width: 640px) {
+  .container {
+    padding: 16px;
+  }
+  
+  .header h1 {
+    font-size: 22px;
+  }
+  
+  .leafletMap {
+    height: 300px;
+  }
+  
+  .mapPlaceholder {
+    height: 300px;
+  }
+}

@@ -6,11 +6,12 @@ import { LoginPage } from './pages/LoginPage';
 import { Register } from './pages/Register';
 import { OwnerDashboard } from './pages/OwnerDashboard';
 import { MinderDashboard } from './pages/MinderDashboard';
-import { TrackSessionPage } from './pages/TrackSessionPage';
+import ActiveSession from './pages/ActiveSession';
 import { SearchCaregiversPage } from './pages/SearchCaregiversPage';
 import { ProfilePage } from './pages/ProfilePage';
 import { ComingSoonPage } from './pages/ComingSoonPage';
 import PetProfilePage from './pages/PetProfilePage';
+import TrackCaregiverPage from './pages/TrackCaregiverPage';  // ✅ ADD THIS
 import { Dog, CalendarCheck, CheckSquare } from 'lucide-react';
 import { CarePlanEditor } from './pages/CarePlanEditor';
 import { BookingsPage } from './pages/BookingsPage';
@@ -41,9 +42,9 @@ function App() {
         <Route index element={<DashboardRouter />} />
         
         {/* Protected Routes */}
-        <Route path="/session" element={
+        <Route path="/session/:bookingId?" element={
           <ProtectedRoute>
-            <TrackSessionPage />
+            <ActiveSession />
           </ProtectedRoute>
         } />
         
@@ -59,14 +60,21 @@ function App() {
           </ProtectedRoute>
         } />
 
-        {/* Care Plan routes — key forces re-mount when switching between new/edit */}
+        {/* ✅ TRACK CAREGIVER ROUTE - ADDED */}
+        <Route path="/track-caregiver/:sessionId" element={
+          <ProtectedRoute>
+            <TrackCaregiverPage />
+          </ProtectedRoute>
+        } />
+
+        {/* Care Plan routes */}
         <Route path="/care-plans/new" element={
           <ProtectedRoute>
             <CarePlanEditor key="new" />
           </ProtectedRoute>
         } />
 
-        {/* Placeholder routes — prevents 404 crashes from nav links */}
+        {/* Placeholder routes */}
         <Route path="/pets/:id" element={
           <ProtectedRoute>
             <PetProfilePage />

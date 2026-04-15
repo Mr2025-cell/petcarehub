@@ -67,7 +67,7 @@ export function MinderDashboard() {
                   </div>
                   <div className={styles.taskActions}>
                     {!isDone && (
-                      <Button variant="outline" size="sm" onClick={() => navigate('/session')}>
+                      <Button variant="outline" size="sm" onClick={() => navigate('/session/booking_123')}>
                         <MapPin size={16} /> Start Session
                       </Button>
                     )}
