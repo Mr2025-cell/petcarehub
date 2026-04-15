@@ -188,20 +188,27 @@ Start GPS session by the caregiver and activate location tracking → See caregi
 Offline Mode User Path
 The caregiver loses internet connection while walking the dog → Offline mode is shown in the app → GPS locations are stored on device → Connect to internet automatically.syncs
 =========================================
-Team Contibution:
-Pet Care Hub’s success can be attributed to the hard work of everyone involved in the project. Mr2025-cell was responsible for the project leadership and development of UC5 (Active Care Session) and UC7 (Admin Dashboard). This comprised real-time GPS location tracking with offline capability, owner live location tracking, photo upload after the completion of walking the dog, and full-fledged admin dashboard to manage users and content. He also addressed the bugs such as “Add New Pet” and “Edit Profile,” made the page for the “My Pets” list, and solved the booking issues to make sure everything integrated smoothly.
+Team Contribution:
 
-As a frontend developer, kartikeyapro1 laid down the groundwork of the entire application. This included creating the login and registration forms for authentication, dashboards based on different roles (owners and caregivers), toast notification for user interaction, and a fully responsive navigation bar for both desktop and mobile platforms.
+Pet Care Hub’s success can be attributed to the hard work of everyone involved in the project.
 
-ThanadolKamwongsa emphasized the care planning process as the backend developer, developing the whole care plan generation and management system, which includes the ability to create repetitive activities, schedule tasks with the option to choose specific times of the day, and seamlessly integrate the care plans into the pet profile and the caregiver dashboard.
+Mr2025-cell was responsible for project leadership and development of UC5: Active Care Session. This included real-time GPS location tracking with offline capability, owner live location tracking, and photo upload after the completion of walking the dog. He also addressed bugs such as “Add New Pet” and “Edit Profile,” made the page for the “My Pets” list, and solved booking issues to make sure everything integrated smoothly.
 
-Ali Tauqir created the marketplace component as the marketplace developer, designing the booking process from scratch, which includes searching for caregivers through filters, managing their availability, creating and canceling bookings, and generating payment stubs to illustrate the monetization process of the platform.
+TobiTobs-code was responsible for UC7: Admin Dashboard & Content Moderation. This included implementing the admin dashboard, caregiver verification queue, complaint manager, and reported review moderation. The admin can approve or reject caregiver qualifications, mark complaints as under review or resolved, and hide or restore reported reviews. TobiTobs-code also added the Admin, Qualification, Complaint, and Rating class models and connected the admin pages to the app routes.
 
-Sunny-1118 helped design the user interface as the UI developer, designing the pet profile viewing page to display all pet details, including medical alerts and emergency contacts.
+As a frontend developer, kartikeyapro1 laid down the groundwork of the entire application. This included creating the login and registration forms for authentication, dashboards based on different roles, toast notification for user interaction, and a fully responsive navigation bar for both desktop and mobile platforms.
+
+ThanadolKamwongsa emphasized the care planning process as the backend developer, developing the care plan generation and management system. This includes creating recurring activities, scheduling tasks with specific times of day, and integrating care plans into the pet profile and caregiver dashboard.
+
+Ali Tauqir created the marketplace component as the marketplace developer, designing the booking process from scratch. This includes searching for caregivers through filters, managing their availability, creating and canceling bookings, and generating payment stubs to illustrate the monetization process of the platform.
+
+Sunny-1118 helped design the user interface as the UI developer, designing the pet profile viewing page to display pet details, including medical alerts and emergency contacts.
+
+This team has successfully delivered a functional pet care marketplace that covers the required components.
 
 # This team has successfully delivered an entirely functional pet care marketplace that covers all the required components.
 
-Furtur Enhancements:
+Future Enhancements:
 Future Improvements
 Live chat during appointments between pet owners and caregivers
 
