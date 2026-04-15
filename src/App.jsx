@@ -21,6 +21,7 @@ import PetsListPage from './pages/PetsListPage';
 import AdminDashboard from './pages/AdminDashboard.jsx';
 import VerificationQueue from './pages/VerificationQueue.jsx';
 import ComplaintManager from './pages/ComplaintManager.jsx';
+import { EmergencyHandler } from './pages/EmergencyHandler';
 
 function DashboardRouter() {
   const { isAuthenticated, isOwner } = useAuth();
@@ -102,6 +103,11 @@ function App() {
         <Route path="/bookings" element={
           <ProtectedRoute>
             <BookingsPage />
+          </ProtectedRoute>
+        } />
+        <Route path="/emergency" element={
+          <ProtectedRoute>
+            <EmergencyHandler />
           </ProtectedRoute>
         } />
 
