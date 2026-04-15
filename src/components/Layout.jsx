@@ -1,6 +1,18 @@
 import { useState } from 'react';
 import { Outlet, Link, useNavigate, useLocation } from 'react-router-dom';
-import { Home, User, LogOut, Dog, Search, CalendarCheck, LogIn, UserPlus, Menu, X } from 'lucide-react';
+import {
+  Home,
+  User,
+  LogOut,
+  Dog,
+  Search,
+  CalendarCheck,
+  LogIn,
+  UserPlus,
+  Menu,
+  X,
+  ShieldCheck
+} from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import styles from './Layout.module.css';
 
@@ -23,7 +35,6 @@ export function Layout() {
     closeMobile();
   };
 
-  // Helper for active link styling
   const isActive = (path) => location.pathname === path;
 
   return (
@@ -34,7 +45,6 @@ export function Layout() {
           <span>Pet Care Hub</span>
         </div>
 
-        {/* Hamburger toggle — visible only on mobile */}
         <button
           className={styles.hamburger}
           onClick={() => setMobileOpen(!mobileOpen)}
@@ -43,7 +53,6 @@ export function Layout() {
           {mobileOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
 
-        {/* Overlay */}
         {mobileOpen && <div className={styles.overlay} onClick={closeMobile} />}
 
         <nav className={`${styles.nav} ${mobileOpen ? styles.navOpen : ''}`}>
@@ -68,12 +77,14 @@ export function Layout() {
               )}
 
               {isMinder && (
-                <>
-                  <Link to="/tasks" className={`${styles.navLink} ${isActive('/tasks') ? styles.navLinkActive : ''}`} onClick={closeMobile}>
-                    <CalendarCheck size={18} /> My Tasks
-                  </Link>
-                </>
+                <Link to="/tasks" className={`${styles.navLink} ${isActive('/tasks') ? styles.navLinkActive : ''}`} onClick={closeMobile}>
+                  <CalendarCheck size={18} /> My Tasks
+                </Link>
               )}
+
+              <Link to="/admin" className={`${styles.navLink} ${isActive('/admin') ? styles.navLinkActive : ''}`} onClick={closeMobile}>
+                <ShieldCheck size={18} /> Admin
+              </Link>
 
               <div className={styles.actions}>
                 <span className={styles.greeting}>
@@ -114,6 +125,7 @@ export function Layout() {
           <div className={styles.footerLinks}>
             <Link to="/">Home</Link>
             <Link to="/search">Find Minders</Link>
+            <Link to="/admin">Admin</Link>
             <Link to="/login">Login</Link>
           </div>
         </div>
