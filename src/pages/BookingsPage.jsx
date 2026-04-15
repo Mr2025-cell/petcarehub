@@ -13,6 +13,18 @@ function formatDate(iso) {
   }
 }
 
+function formatSession(b) {
+  if (!b?.sessionDate) return '';
+  try {
+    const d = new Date(b.sessionDate);
+    const datePart = d.toLocaleDateString('en-GB');
+    if (b.startTime && b.endTime) return `${datePart}, ${b.startTime}–${b.endTime}`;
+    return formatDate(b.sessionDate);
+  } catch {
+    return formatDate(b.sessionDate);
+  }
+}
+
 export function BookingsPage() {
   const [bookings, setBookings] = useState([]);
   const { currentUser } = useAuth();
@@ -55,9 +67,14 @@ export function BookingsPage() {
 
                 <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', opacity: 0.85 }}>
                   <div>Status: {b.status || 'Confirmed'}</div>
-                  <div>Created: {formatDate(b.createdAt)}</div>
-                  {b.sessionDate ? <div>Session: {formatDate(b.sessionDate)}</div> : null}
-                  {b.payment?.status ? <div>Payment: {b.payment.status}</div> : null}
+                  {b.sessionDate ? <div>Session: {formatSession(b)}</div> : null}
+                  {typeof b.durationHours === 'number' ? <div>Duration: {b.durationHours} hrs</div> : null}
+                  {typeof b.totalPrice === 'number' ? <div>Total: £{b.totalPrice}</div> : null}
+                  {b.status === 'Cancelled' ? (
+                    <div>Payment: Refunded</div>
+                  ) : b.payment?.status ? (
+                    <div>Payment: {b.payment.status}</div>
+                  ) : null}
                 </div>
 
                 {b.status !== 'Cancelled' ? (

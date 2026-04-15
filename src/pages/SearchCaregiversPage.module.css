@@ -224,6 +224,60 @@
   line-height: 1.5;
 }
 
+.formGrid {
+  display: grid;
+  gap: 0.85rem;
+  margin-top: 0.85rem;
+}
+
+.formRow2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.field label {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--neutral-700);
+  margin-bottom: 0.35rem;
+}
+
+.field input {
+  width: 100%;
+  border: 1px solid var(--neutral-300);
+  border-radius: 10px;
+  padding: 0.6rem 0.7rem;
+  outline: none;
+  font-size: 0.95rem;
+}
+
+.field input:focus {
+  border-color: var(--primary-500);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+.summaryBox {
+  margin-top: 0.5rem;
+  background: var(--neutral-50);
+  border: 1px solid var(--neutral-200);
+  border-radius: 12px;
+  padding: 0.75rem 0.85rem;
+  color: var(--neutral-800);
+  display: grid;
+  gap: 0.25rem;
+}
+
+.errorBox {
+  margin-top: 0.75rem;
+  background: rgba(220, 38, 38, 0.08);
+  border: 1px solid rgba(220, 38, 38, 0.25);
+  color: #b91c1c;
+  border-radius: 12px;
+  padding: 0.65rem 0.8rem;
+  font-size: 0.9rem;
+}
+
 .modalCaregiverName {
   color: var(--neutral-900);
   font-weight: 700;
@@ -261,6 +315,10 @@
 
   .loadingState, .emptyState {
     padding: 2rem;
+  }
+
+  .formRow2 {
+    grid-template-columns: 1fr;
   }
 }
 

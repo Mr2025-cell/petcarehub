@@ -44,7 +44,7 @@ export const BookingManager = {
       caregiver?.name ||
       'Caregiver';
 
-    const price = options.price ?? caregiver?.hourlyRate ?? caregiver?.rate ?? 0;
+    const price = options.price ?? caregiver?.hourlyRate ?? caregiver?.rate ?? 0; // hourly rate
     const sessionDate = options.sessionDate ?? null;
     const userEmail = getCurrentUserEmail();
 
@@ -52,8 +52,14 @@ export const BookingManager = {
       caregiverId,
       caregiverName,
       price,
+      hourlyRate: options.hourlyRate ?? price,
       status: 'Confirmed',
       sessionDate,
+      startTime: options.startTime ?? null,
+      endTime: options.endTime ?? null,
+      durationHours: options.durationHours ?? null,
+      totalPrice: options.totalPrice ?? null,
+      payment: options.payment ?? null,
       ...(userEmail ? { userEmail } : {}),
     });
 
