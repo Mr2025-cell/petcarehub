@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { marketplaceService } from '../services/marketplaceService';
 import { Card } from '../components/Card';
 import { Button } from '../components/Button';
+import { useAuth } from '../contexts/AuthContext';
 
 function formatDate(iso) {
   if (!iso) return '';
@@ -14,6 +15,7 @@ function formatDate(iso) {
 
 export function BookingsPage() {
   const [bookings, setBookings] = useState([]);
+  const { currentUser } = useAuth();
 
   const refresh = () => {
     setBookings(marketplaceService.getBookings());
@@ -21,7 +23,7 @@ export function BookingsPage() {
 
   useEffect(() => {
     refresh();
-  }, []);
+  }, [currentUser?.email]);
 
   const handleCancel = (id) => {
     marketplaceService.cancelBooking(id);

@@ -11,17 +11,29 @@ function safeParse(json, fallback) {
   }
 }
 
+function getCurrentUserEmail() {
+  if (typeof window === 'undefined') return '';
+  const raw = window.localStorage.getItem('petminder_current_session');
+  const session = safeParse(raw, null);
+  return typeof session?.email === 'string' ? session.email : '';
+}
+
+function getStorageKeyForCurrentUser() {
+  const email = getCurrentUserEmail();
+  return email ? `${STORAGE_KEY}_${email}` : STORAGE_KEY;
+}
+
 export const BookingManager = {
   getBookings() {
     if (typeof window === 'undefined') return [];
-    const raw = window.localStorage.getItem(STORAGE_KEY);
+    const raw = window.localStorage.getItem(getStorageKeyForCurrentUser());
     const arr = safeParse(raw, []);
     return Array.isArray(arr) ? arr : [];
   },
 
   saveBookings(bookings) {
     if (typeof window === 'undefined') return;
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(bookings));
+    window.localStorage.setItem(getStorageKeyForCurrentUser(), JSON.stringify(bookings));
   },
 
   createBooking(caregiver, options = {}) {
@@ -34,6 +46,7 @@ export const BookingManager = {
 
     const price = options.price ?? caregiver?.hourlyRate ?? caregiver?.rate ?? 0;
     const sessionDate = options.sessionDate ?? null;
+    const userEmail = getCurrentUserEmail();
 
     const booking = new Booking({
       caregiverId,
@@ -41,6 +54,7 @@ export const BookingManager = {
       price,
       status: 'Confirmed',
       sessionDate,
+      ...(userEmail ? { userEmail } : {}),
     });
 
     const all = BookingManager.getBookings();
