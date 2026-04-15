@@ -6,12 +6,30 @@ import { marketplaceService } from '../services/marketplaceService';
 import { Search, Star, ShieldCheck, MapPin } from 'lucide-react';
 import styles from './SearchCaregiversPage.module.css';
 
+function toMinutes(hhmm) {
+  if (!hhmm || typeof hhmm !== 'string') return null;
+  const [hStr, mStr] = hhmm.split(':');
+  const h = Number(hStr);
+  const m = Number(mStr);
+  if (!Number.isFinite(h) || !Number.isFinite(m)) return null;
+  if (h < 0 || h > 23 || m < 0 || m > 59) return null;
+  return h * 60 + m;
+}
+
 export function SearchCaregiversPage() {
   const navigate = useNavigate();
   const [caregivers, setCaregivers] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [pendingBookingMinder, setPendingBookingMinder] = useState(null);
+  const [bookingDate, setBookingDate] = useState('');
+  const [startTime, setStartTime] = useState('');
+  const [endTime, setEndTime] = useState('');
+  const [cardholderName, setCardholderName] = useState('');
+  const [cardNumber, setCardNumber] = useState('');
+  const [expiry, setExpiry] = useState('');
+  const [cvv, setCvv] = useState('');
+  const [bookingError, setBookingError] = useState('');
 
   useEffect(() => {
     // Initial fetch from "Firestore"
@@ -46,13 +64,57 @@ export function SearchCaregiversPage() {
 
   const handleBookSession = (minder) => {
     setPendingBookingMinder(minder);
+    setBookingDate('');
+    setStartTime('');
+    setEndTime('');
+    setCardholderName('');
+    setCardNumber('');
+    setExpiry('');
+    setCvv('');
+    setBookingError('');
   };
 
-  const confirmBooking = (minder) => {
+  const validateAndPay = (minder) => {
     try {
+      setBookingError('');
+
+      if (!bookingDate) return setBookingError('Please choose a booking date.');
+      if (!startTime) return setBookingError('Please choose a start time.');
+      if (!endTime) return setBookingError('Please choose an end time.');
+
+      const startMins = toMinutes(startTime);
+      const endMins = toMinutes(endTime);
+      if (startMins == null || endMins == null) return setBookingError('Please enter a valid start and end time.');
+      if (endMins <= startMins) return setBookingError('End time must be later than start time.');
+
+      const durationHours = Number(((endMins - startMins) / 60).toFixed(2));
+      const hourlyRate = Number(minder?.hourlyRate ?? 0) || 0;
+      const totalPrice = Number((durationHours * hourlyRate).toFixed(2));
+
+      if (!cardholderName.trim()) return setBookingError('Cardholder name is required.');
+
+      const digitsOnly = String(cardNumber).replace(/\s+/g, '');
+      if (!/^\d{12,19}$/.test(digitsOnly)) return setBookingError('Card number must look like a valid card number.');
+      if (!/^(0[1-9]|1[0-2])\/\d{2}$/.test(String(expiry).trim())) return setBookingError('Expiry must be in MM/YY format.');
+      if (!/^\d{3}$/.test(String(cvv).trim())) return setBookingError('CVV must be 3 digits.');
+
+      const last4 = digitsOnly.slice(-4);
+      const sessionDate = new Date(`${bookingDate}T${startTime}:00`).toISOString();
+
       marketplaceService.createBooking(minder, {
-        // No date picker yet — keep sessionDate null for now.
-        sessionDate: null,
+        sessionDate,
+        startTime,
+        endTime,
+        durationHours,
+        hourlyRate,
+        totalPrice,
+        price: hourlyRate,
+        payment: {
+          amount: totalPrice,
+          method: 'Card',
+          status: 'Paid',
+          last4,
+        },
       });
       setPendingBookingMinder(null);
       navigate('/bookings');
@@ -61,6 +123,13 @@ export function SearchCaregiversPage() {
       alert('Sorry — we could not create that booking.');
     }
   };
+
+  const startMins = toMinutes(startTime);
+  const endMins = toMinutes(endTime);
+  const showSummary = pendingBookingMinder && bookingDate && startMins != null && endMins != null && endMins > startMins;
+  const durationHours = showSummary ? Number(((endMins - startMins) / 60).toFixed(2)) : 0;
+  const hourlyRate = pendingBookingMinder ? Number(pendingBookingMinder?.hourlyRate ?? 0) || 0 : 0;
+  const totalPrice = showSummary ? Number((durationHours * hourlyRate).toFixed(2)) : 0;
 
   return (
     <div className={styles.container}>
@@ -141,26 +210,114 @@ export function SearchCaregiversPage() {
             className={styles.modal}
             role="dialog"
             aria-modal="true"
-            aria-labelledby="confirm-booking-title"
+            aria-labelledby="booking-payment-title"
             onClick={(e) => e.stopPropagation()}
           >
             <div className={styles.modalHeader}>
-              <h3 id="confirm-booking-title" className={styles.modalTitle}>Confirm Booking</h3>
+              <h3 id="booking-payment-title" className={styles.modalTitle}>Book & Pay</h3>
             </div>
 
             <div className={styles.modalBody}>
               <p className={styles.modalText}>
-                Confirm booking with{' '}
+                Complete your booking with{' '}
                 <span className={styles.modalCaregiverName}>
                   {`${pendingBookingMinder?.firstName ?? ''} ${pendingBookingMinder?.lastName ?? ''}`.trim() || 'this caregiver'}
                 </span>
-                ?
+                .
               </p>
+
+              <div className={styles.formGrid}>
+                <div className={styles.field}>
+                  <label htmlFor="booking-date">Booking Date</label>
+                  <input
+                    id="booking-date"
+                    type="date"
+                    value={bookingDate}
+                    onChange={(e) => setBookingDate(e.target.value)}
+                  />
+                </div>
+
+                <div className={styles.formRow2}>
+                  <div className={styles.field}>
+                    <label htmlFor="start-time">Start Time</label>
+                    <input
+                      id="start-time"
+                      type="time"
+                      value={startTime}
+                      onChange={(e) => setStartTime(e.target.value)}
+                    />
+                  </div>
+                  <div className={styles.field}>
+                    <label htmlFor="end-time">End Time</label>
+                    <input
+                      id="end-time"
+                      type="time"
+                      value={endTime}
+                      onChange={(e) => setEndTime(e.target.value)}
+                    />
+                  </div>
+                </div>
+
+                <div className={styles.summaryBox}>
+                  <div>Hourly Rate: £{hourlyRate}/hour</div>
+                  <div>Duration: {showSummary ? `${durationHours} hours` : '—'}</div>
+                  <div style={{ fontWeight: 700 }}>Total: {showSummary ? `£${totalPrice}` : '—'}</div>
+                </div>
+
+                <div className={styles.field}>
+                  <label htmlFor="cardholder-name">Cardholder Name</label>
+                  <input
+                    id="cardholder-name"
+                    type="text"
+                    placeholder="Name on card"
+                    value={cardholderName}
+                    onChange={(e) => setCardholderName(e.target.value)}
+                  />
+                </div>
+
+                <div className={styles.field}>
+                  <label htmlFor="card-number">Card Number</label>
+                  <input
+                    id="card-number"
+                    type="text"
+                    inputMode="numeric"
+                    placeholder="1234 5678 9012 3456"
+                    value={cardNumber}
+                    onChange={(e) => setCardNumber(e.target.value)}
+                  />
+                </div>
+
+                <div className={styles.formRow2}>
+                  <div className={styles.field}>
+                    <label htmlFor="expiry">Expiry Date</label>
+                    <input
+                      id="expiry"
+                      type="text"
+                      placeholder="MM/YY"
+                      value={expiry}
+                      onChange={(e) => setExpiry(e.target.value)}
+                    />
+                  </div>
+                  <div className={styles.field}>
+                    <label htmlFor="cvv">CVV</label>
+                    <input
+                      id="cvv"
+                      type="password"
+                      inputMode="numeric"
+                      placeholder="123"
+                      value={cvv}
+                      onChange={(e) => setCvv(e.target.value)}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {bookingError ? <div className={styles.errorBox}>{bookingError}</div> : null}
             </div>
 
             <div className={styles.modalActions}>
               <Button variant="outline" onClick={() => setPendingBookingMinder(null)}>Cancel</Button>
-              <Button onClick={() => confirmBooking(pendingBookingMinder)}>Confirm</Button>
+              <Button onClick={() => validateAndPay(pendingBookingMinder)}>Pay &amp; Book Now</Button>
             </div>
           </div>
         </div>
