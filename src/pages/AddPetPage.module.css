@@ -1,0 +1,191 @@
+.page {
+  padding: 24px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.card {
+  padding: 32px;
+}
+
+.backButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #64748b;
+  margin-bottom: 24px;
+  font-size: 14px;
+}
+
+.backButton:hover {
+  color: #3b82f6;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.headerIcon {
+  color: #667eea;
+  margin-bottom: 16px;
+}
+
+.header h1 {
+  margin: 0;
+  color: #1e293b;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.formGroup label {
+  font-weight: 600;
+  color: #475569;
+  font-size: 14px;
+}
+
+.formGroup input,
+.formGroup select,
+.formGroup textarea {
+  padding: 10px 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+}
+
+.formGroup input:focus,
+.formGroup select:focus,
+.formGroup textarea:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.sectionTitle {
+  margin: 16px 0 0 0;
+  font-size: 18px;
+  color: #1e293b;
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 8px;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 16px;
+}
+
+@media (max-width: 640px) {
+  .formRow {
+    grid-template-columns: 1fr;
+  }
+  
+  .card {
+    padding: 20px;
+  }
+}
+/* Photo Upload Styles */
+.photoSection {
+  margin-bottom: 20px;
+}
+
+.photoLabel {
+  font-weight: 600;
+  color: #475569;
+  font-size: 14px;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.photoUploadContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.photoPreview {
+  position: relative;
+  display: inline-block;
+}
+
+.previewImage {
+  width: 150px;
+  height: 150px;
+  border-radius: 16px;
+  object-fit: cover;
+  border: 2px solid #e2e8f0;
+}
+
+.removePhotoBtn {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.removePhotoBtn:hover {
+  background: #dc2626;
+}
+
+.photoPlaceholder {
+  width: 150px;
+  height: 150px;
+  border-radius: 16px;
+  background: #f1f5f9;
+  border: 2px dashed #cbd5e1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #94a3b8;
+}
+
+.photoInput {
+  display: none;
+}
+
+.photoUploadBtn {
+  background: #f1f5f9;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #475569;
+  transition: all 0.2s;
+}
+
+.photoUploadBtn:hover {
+  background: #e2e8f0;
+}

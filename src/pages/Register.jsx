@@ -45,6 +45,35 @@ export function Register() {
     }
   };
 
+  // Save caregiver to localStorage for search results
+  const saveCaregiverToLocalStorage = (userData) => {
+    if (role === 'PetCaregiver') {
+      const existingCaregivers = JSON.parse(localStorage.getItem('petcaregivers') || '[]');
+      
+      // Check if caregiver already exists (avoid duplicates)
+      const exists = existingCaregivers.some(c => c.email === userData.email);
+      
+      if (!exists) {
+        const newCaregiver = {
+          id: userData.id || Date.now(),
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          email: formData.email,
+          bio: formData.bio || "Professional pet caregiver available for bookings",
+          hourlyRate: parseFloat(formData.hourlyRate) || 25.00,
+          averageRating: 5.0,
+          totalReviews: 0,
+          isVerified: false,
+          profileImageUrl: null,
+          createdAt: new Date().toISOString()
+        };
+        existingCaregivers.push(newCaregiver);
+        localStorage.setItem('petcaregivers', JSON.stringify(existingCaregivers));
+        console.log('✅ Caregiver saved to search list:', newCaregiver.firstName);
+      }
+    }
+  };
+
   const handleRegister = async (e) => {
     e.preventDefault();
     setErrors({});
@@ -81,8 +110,48 @@ export function Register() {
         address: [formData.addressLine, formData.city, formData.postcode].filter(Boolean).join(', ')
       };
       const newUser = await authService.register(submissionData, role);
+      
+      // ✅ SAVE TO LOCALSTORAGE FOR SEARCH
+      const userData = {
+        id: Date.now(),
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        role: role,
+        createdAt: new Date().toISOString()
+      };
+
+      // Save to users list
+      const existingUsers = JSON.parse(localStorage.getItem('petcare_users') || '[]');
+      existingUsers.push(userData);
+      localStorage.setItem('petcare_users', JSON.stringify(existingUsers));
+
+      // If role is PetCaregiver, save to caregivers list for search
+      if (role === 'PetCaregiver') {
+        const existingCaregivers = JSON.parse(localStorage.getItem('petcaregivers') || '[]');
+        const newCaregiver = {
+          id: userData.id,
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          email: formData.email,
+          bio: formData.bio || "Professional pet caregiver available for bookings",
+          hourlyRate: parseFloat(formData.hourlyRate) || 25.00,
+          averageRating: 5.0,
+          totalReviews: 0,
+          isVerified: false,
+          profileImageUrl: null,
+          createdAt: new Date().toISOString()
+        };
+        existingCaregivers.push(newCaregiver);
+        localStorage.setItem('petcaregivers', JSON.stringify(existingCaregivers));
+        
+        // ✅ Debug: Verify it was saved
+        console.log('✅ Caregiver saved to localStorage:', newCaregiver);
+        console.log('Total caregivers now:', existingCaregivers.length);
+      }
+      
       loginUser(newUser);
-      addToast(`Welcome to PetMinder, ${newUser.firstName}! 🎉`, 'success');
+      addToast(`Welcome to Pet Care Hub, ${newUser.firstName}! 🎉`, 'success');
       navigate('/');
     } catch (err) {
       setApiError(err.message || 'Registration failed.');
@@ -96,7 +165,7 @@ export function Register() {
       <div className={styles.backBar}>
         <div className={styles.logoLink} onClick={() => navigate('/')}>
           <Dog size={22} />
-          <span>PetMinder</span>
+          <span>Pet Care Hub</span>
         </div>
       </div>
 
@@ -104,7 +173,7 @@ export function Register() {
         <Card className={styles.loginCard}>
           <div className={styles.header}>
             <h2>Create an Account</h2>
-            <p>Join PetMinder today.</p>
+            <p>Join Pet Care Hub today.</p>
           </div>
 
           {apiError && <div className={styles.errorBanner}>{apiError}</div>}
@@ -238,7 +307,7 @@ export function Register() {
                     placeholder="Tell owners about your experience..." 
                     value={formData.bio} 
                     onChange={handleChange} 
-                    style={{ padding: '0.75rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--neutral-300)', fontFamily: 'inherit', fontSize: '0.875rem', resize: 'vertical' }}
+                    style={{ padding: '0.75rem', borderRadius: '8px', border: '1px solid #e2e8f0', fontFamily: 'inherit', fontSize: '0.875rem', resize: 'vertical' }}
                   ></textarea>
                 </div>
               </>

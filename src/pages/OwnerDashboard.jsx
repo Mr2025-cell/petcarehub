@@ -14,12 +14,25 @@ export function OwnerDashboard() {
   // load care plans + tasks from localStorage
   const [carePlans, setCarePlans] = useState([]);
   const [tasks, setTasks] = useState([]);
+  
+  // Load pets from localStorage or use mock data
+  const [pets, setPets] = useState([]);
 
   useEffect(() => {
     const savedPlans = localStorage.getItem('petminder_careplans');
     const savedTasks = localStorage.getItem('petminder_tasks');
     setCarePlans(savedPlans ? JSON.parse(savedPlans) : []);
     setTasks(savedTasks ? JSON.parse(savedTasks) : []);
+  }, []);
+
+  // Load pets from localStorage
+  useEffect(() => {
+    const savedPets = localStorage.getItem('userPets');
+    if (savedPets) {
+      setPets(JSON.parse(savedPets));
+    } else {
+      setPets(mockPets);
+    }
   }, []);
 
   // Track active caregiver sessions for live tracking
@@ -39,6 +52,11 @@ export function OwnerDashboard() {
     const interval = setInterval(checkActiveSharing, 5000);
     return () => clearInterval(interval);
   }, []);
+  const getPlaceholderColor = (name) => {
+    const colors = ['purple', 'blue', 'green', 'orange', 'pink'];
+    const index = name.length % colors.length;
+    return colors[index];
+  };
 
   // toggle task status between pending and completed
   function handleToggleTask(taskId) {
@@ -89,7 +107,6 @@ export function OwnerDashboard() {
           <Button 
             variant="outline" 
             onClick={() => {
-              // Reload active sessions from localStorage
               const activeShares = JSON.parse(localStorage.getItem('active_sharing_sessions') || '[]');
               setActiveSessions(activeShares);
             }}
@@ -138,13 +155,17 @@ export function OwnerDashboard() {
             <h3><Dog size={22} className={styles.iconPrimary} /> My Pets Detail</h3>
           </div>
           <div className={styles.petList}>
-            {mockPets.map(pet => (
+            {pets.map(pet => (
               <Card key={pet.id} className={styles.petCardDetailed} hoverable onClick={() => navigate(`/pets/${pet.id}`)}>
                 <div className={styles.petImageContainer}>
                   {pet.profileImageUrl ? (
                     <img src={pet.profileImageUrl} alt={pet.name} className={styles.petImage} />
                   ) : (
-                    <div className={styles.petPlaceholder}><Dog size={48} /></div>
+                    <div className={`${styles.petPlaceholder} ${getPlaceholderColor(pet.name)}`}>
+                      <div className={styles.petInitials}>
+                        {pet.name.charAt(0).toUpperCase()}
+                      </div>
+                    </div>
                   )}
                   <div className={styles.petTags}>
                     <span className={styles.tag}>{pet.breed}</span>
@@ -178,7 +199,7 @@ export function OwnerDashboard() {
                   </div>
                   
                   <div className={styles.petCardActions}>
-                    <Button variant="outline" size="sm">Edit Profile</Button>
+                    <Button variant="outline" size="sm" onClick={(e) => { e.stopPropagation(); navigate(`/pets/${pet.id}/edit`); }}>Edit Profile</Button>
                     <Button variant="outline" size="sm" onClick={(e) => { e.stopPropagation(); navigate(`/care-plans/new?petId=${pet.id}`); }}>Care Plans</Button>
                   </div>
                 </div>
@@ -235,7 +256,7 @@ export function OwnerDashboard() {
             </div>
             <div className={styles.list}>
               {carePlans.length > 0 ? carePlans.map(plan => {
-                const pet = mockPets.find(p => p.id === plan.petId);
+                const pet = pets.find(p => p.id === plan.petId);
                 return (
                   <div key={plan.id} className={styles.planItem}>
                     <div className={styles.planContent}>

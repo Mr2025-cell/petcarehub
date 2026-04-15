@@ -15,6 +15,9 @@ import TrackCaregiverPage from './pages/TrackCaregiverPage';  // ✅ ADD THIS
 import { Dog, CalendarCheck, CheckSquare } from 'lucide-react';
 import { CarePlanEditor } from './pages/CarePlanEditor';
 import { BookingsPage } from './pages/BookingsPage';
+import AddPetPage from './pages/AddPetPage';
+import EditPetPage from './pages/EditPetPage';
+import PetsListPage from './pages/PetsListPage';
 
 // A simple wrapper to route to the proper dashboard depending on state
 function DashboardRouter() {
@@ -57,6 +60,22 @@ function App() {
         <Route path="/profile" element={
           <ProtectedRoute>
             <ProfilePage />
+          </ProtectedRoute>
+        } />
+        
+        <Route path="/pets" element={
+          <ProtectedRoute>
+            <PetsListPage />
+          </ProtectedRoute>
+        } />
+        <Route path="/pets/add" element={
+          <ProtectedRoute>
+            <AddPetPage />
+          </ProtectedRoute>
+        } />
+        <Route path="/pets/:id/edit" element={
+          <ProtectedRoute>
+            <EditPetPage />
           </ProtectedRoute>
         } />
 
